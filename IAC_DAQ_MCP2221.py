@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import adafruit_vl53l0x
 from cedargrove_nau7802 import NAU7802
 
+# git test
+
 # Load cell
 loadCelSensor = NAU7802(board.I2C(), address=0x2a, active_channels=1)
 
