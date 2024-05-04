@@ -21,10 +21,10 @@ i2c = busio.I2C(board.SCL, board.SDA)
 tofSensor = adafruit_vl53l0x.VL53L0X(i2c)
 
 # Constants to be determined during calibration: with the given values you will get the values as they are measured, you need to determine them during calibration to make sense
-C0_load = 0
-C1_load = 1
-C0_tof = 0
-C1_tof = 1
+# C0_load = 0
+# C1_load = 1
+# C0_tof = 0
+# C1_tof = 1
 
 # generate empty lists to enable plotting during the test 
 lst_load = [] # List to store load cell values
@@ -41,19 +41,19 @@ try:
 
         # Output sensor data
         # print to screen
-        print("Load cell: {:.0f}, Distance: {:.0f}".format(loadCellValue, tofValue))
         # print("Load cell: {:.0f}".format(loadCellValue))
         # save to file (during test, not afterwards), and these are the raw data (to be changed with the constants)
-        file2write=open("Data_Test_CHANGENAME.txt",'a')
+        file2write=open("Data_Test_CHANGENAME.txt", 'a')
         file2write.write(str(loadCellValue) + " " + str(tofValue) + "\n")
         file2write.flush()
         file2write.close()
-        
+
         # 'translate' date to useful values (C0_load, C1_load, C0_tof and C1_tof are determined during calibration)
-        Load = C0_load + C1_load * loadCellValue 
-        Tof = C0_tof + C1_tof * tofValue 
-        
-        # append to the list 
+        Load = 0.0227 * loadCellValue - 1844.2
+        Tof = tofValue
+
+        print("Load cell: {:.0f} g, Distance: {:.0f} mm".format(Load, Tof))
+        # append to the list
         lst_load += [Load]
         lst_tof += [Tof]
         
@@ -65,6 +65,7 @@ try:
         plt.draw()
         plt.pause(0.001)
         time.sleep(1)
+        plt.close()
 
 # Exit
 except KeyboardInterrupt:
